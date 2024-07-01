@@ -9,6 +9,8 @@ from opentelemetry import trace
 from text_embeddings_server.models import Model
 from text_embeddings_server.models.types import PaddedBatch, Embedding
 from typing import Optional
+from loguru import logger
+import intel_extension_for_pytorch as ipex
 
 tracer = trace.get_tracer(__name__)
 
@@ -27,7 +29,8 @@ class DefaultModel(Model):
             inspect.signature(model.forward).parameters.get("token_type_ids", None)
             is not None
         )
-
+        model = ipex.optimize(model)
+        logger.info(f"Python backend: ipex model {model}")
         super(DefaultModel, self).__init__(model=model, dtype=dtype, device=device)
 
     @property

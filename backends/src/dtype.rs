@@ -17,6 +17,8 @@ pub enum DType {
     Float32,
     // #[cfg(feature = "candle")]
     // Q6K,
+    #[cfg(any(feature = "python"))]
+    Bfloat16,
 }
 
 impl fmt::Display for DType {
@@ -33,6 +35,8 @@ impl fmt::Display for DType {
             DType::Float32 => write!(f, "float32"),
             // #[cfg(feature = "candle")]
             // DType::Q6K => write!(f, "q6k"),
+            #[cfg(any(feature = "python"))]
+            DType::Bfloat16 => write!(f, "bfloat16"),
         }
     }
 }
